@@ -4,6 +4,15 @@ import {BsCamera} from "react-icons/bs"
 import pix from "../assets/dummy Image.png"
 
 const PageI = () => {
+    const va = JSON.parse(localStorage.getItem("data")!)
+
+    const [name, setName] = useState<string>(va?.name)
+    const [email, setEmail] = useState<string>(va?.email)
+
+
+    
+    console.log(name);
+    console.log(email);
     
         return <Main>
             <CircleContainer>
@@ -14,14 +23,33 @@ const PageI = () => {
                 <Circle c="yellowgreen" bg="">3</Circle>
             </CircleContainer>
 
-            <Input placeholder="input your name" />
-            <Input placeholder="input your email" />
+            <Input placeholder="input your name" 
+            value={name}
+            onChange={(e : any)=>{
+                setName(e.target.value)
+            }}
+            />
+
+            <Input placeholder="input your email" 
+            value={email}
+            onChange={(e : any)=>{
+                setEmail(e.target.value)
+            }}
+            />
 
             <ButtonHolder>
                 <Button bg="yellowgreen"
                 onClick={()=>{
                     localStorage.setItem("page", JSON.stringify(2))
+                    
+                    const anObj : {} = {
+                        email, name
+                    }
+                    
+                    
+                    localStorage.setItem("data", JSON.stringify(anObj))
                     window.location.reload()
+
                 }}
                 >Next</Button>
             </ButtonHolder>
@@ -31,6 +59,11 @@ const PageI = () => {
 const PageII = () => {
     const x = JSON.parse(localStorage.getItem("page")!)
     console.log("state",x);
+    const mainData = JSON.parse(localStorage.getItem("data")!)
+    console.log("mainData",mainData);
+    
+
+    const [password, setPassword] = useState<string>(mainData?.password)
     
         return <Main>
             <CircleContainer>
@@ -41,7 +74,12 @@ const PageII = () => {
                 <Circle c="yellowgreen" bg="">3</Circle>
             </CircleContainer>
 
-            <Input placeholder="input your password" />
+            <Input placeholder="input your password" 
+            value={password}
+            onChange={(e : any)=>{
+                setPassword(e.target.value)
+            }}
+            />
 
             <ButtonHolder>
                 <Button bg="black"
@@ -50,10 +88,17 @@ const PageII = () => {
                     window.location.reload()
                 }}
                 >Prev</Button>
+
                 <Button bg="yellowgreen"
                 onClick={()=>{
                     localStorage.setItem("page", JSON.stringify(3))
                     window.location.reload()
+
+                    const va = {
+                        password, name : mainData?.name, email : mainData?.email
+                    }
+
+                    localStorage.setItem("data", JSON.stringify(va))
                 }}
                 >Next</Button>
             </ButtonHolder>
@@ -63,9 +108,11 @@ const PageII = () => {
 const PageIII = () => {
     const [image, setImage] = useState<string>("")
     const [avatar, setAvatar] = useState<string>(pix)
+    console.log(image);
 
 const x = JSON.parse(localStorage.getItem("page")!)
 console.log("state",x);
+const mainData = JSON.parse(localStorage.getItem("data")!)
 
     const onHandleImage = (e : any) =>{
         const file = e.target.files![0]
@@ -99,6 +146,18 @@ console.log("state",x);
                     window.location.reload()
                 }}
                 >Prev</Button>
+
+                <Button bg="yellowgreen"
+                onClick={()=>{
+                    const anObj = {
+                        avatar, name : mainData?.name, email : mainData?.email, password : mainData?.password
+                    }
+
+                    localStorage.setItem("data", JSON.stringify(anObj))
+                    
+                    window.location.reload()
+                }}
+                >Submit</Button>
                 
             </ButtonHolder>
         </Main>
